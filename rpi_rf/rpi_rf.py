@@ -25,7 +25,7 @@ PROTOCOLS = (None,
              Protocol(100, 30, 71, 4, 11, 9, 6),
              Protocol(380, 1, 6, 1, 3, 3, 1),
              Protocol(500, 6, 14, 1, 2, 2, 1),
-             Protocol(200, 1, 15, 1, 7, 1, 1))
+             Protocol(200, 1, 10, 1, 5, 1, 1))
 
 
 class RFDevice:
@@ -106,7 +106,16 @@ class RFDevice:
         else:
             self.tx_pulselength = PROTOCOLS[self.tx_proto].pulselength
         rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
+        if self.tx_proto == 6:
+            nexacode = ""
+            for b in rawcode:
+                if b == 0:
+                    nexacode = nexacode + "01"
+                if b == 1:
+                    nexacode = nexacode + "10"
+            rawcode = nexacode
         _LOGGER.debug("TX code: " + str(code))
+        _LOGGER.debug("rawcode: " + str(rawcode))
         return self.tx_bin(rawcode)
 
     def tx_bin(self, rawcode):
