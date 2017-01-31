@@ -25,7 +25,7 @@ PROTOCOLS = (None,
              Protocol(100, 30, 71, 4, 11, 9, 6),
              Protocol(380, 1, 6, 1, 3, 3, 1),
              Protocol(500, 6, 14, 1, 2, 2, 1),
-             Protocol(200, 1, 15, 1, 7, 1, 1))
+             Protocol(200, 1, 10, 1, 5, 1, 1))
 
 
 class RFDevice:
@@ -130,6 +130,9 @@ class RFDevice:
         if not 0 < self.tx_proto < len(PROTOCOLS):
             _LOGGER.error("Unknown TX protocol")
             return False
+        if self.tx_proto == 6:
+            if self.tx_waveform(PROTOCOLS[self.tx_proto].zero_high,PROTOCOLS[self.tx_proto].zero_low):
+                return self.tx_waveform(PROTOCOLS[self.tx_proto].one_high,PROTOCOLS[self.tx_proto].one_low)
         return self.tx_waveform(PROTOCOLS[self.tx_proto].zero_high,
                                 PROTOCOLS[self.tx_proto].zero_low)
 
@@ -138,6 +141,9 @@ class RFDevice:
         if not 0 < self.tx_proto < len(PROTOCOLS):
             _LOGGER.error("Unknown TX protocol")
             return False
+        if self.tx_proto == 6:
+            if self.tx_waveform(PROTOCOLS[self.tx_proto].one_high,PROTOCOLS[self.tx_proto].one_low):
+                return self.tx_waveform(PROTOCOLS[self.tx_proto].zero_high,PROTOCOLS[self.tx_proto].zero_low)
         return self.tx_waveform(PROTOCOLS[self.tx_proto].one_high,
                                 PROTOCOLS[self.tx_proto].one_low)
 
