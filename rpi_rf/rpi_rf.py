@@ -133,6 +133,8 @@ class RFDevice:
         if self.tx_proto == 6:
             if self.tx_waveform(PROTOCOLS[self.tx_proto].zero_high,PROTOCOLS[self.tx_proto].zero_low):
                 return self.tx_waveform(PROTOCOLS[self.tx_proto].one_high,PROTOCOLS[self.tx_proto].one_low)
+            else:
+                return False
         return self.tx_waveform(PROTOCOLS[self.tx_proto].zero_high,
                                 PROTOCOLS[self.tx_proto].zero_low)
 
@@ -144,6 +146,8 @@ class RFDevice:
         if self.tx_proto == 6:
             if self.tx_waveform(PROTOCOLS[self.tx_proto].one_high,PROTOCOLS[self.tx_proto].one_low):
                 return self.tx_waveform(PROTOCOLS[self.tx_proto].zero_high,PROTOCOLS[self.tx_proto].zero_low)
+            else:
+                return False
         return self.tx_waveform(PROTOCOLS[self.tx_proto].one_high,
                                 PROTOCOLS[self.tx_proto].one_low)
 
