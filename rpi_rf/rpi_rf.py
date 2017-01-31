@@ -22,7 +22,8 @@ PROTOCOLS = (None,
              Protocol(650, 1, 10, 1, 2, 2, 1),
              Protocol(100, 30, 71, 4, 11, 9, 6),
              Protocol(380, 1, 6, 1, 3, 3, 1),
-             Protocol(500, 6, 14, 1, 2, 2, 1))
+             Protocol(500, 6, 14, 1, 2, 2, 1)),
+             Protocol(200, 1, 15, 1, 7, 1, 1))
 
 
 class RFDevice:
