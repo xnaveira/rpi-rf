@@ -12,6 +12,8 @@ MAX_CHANGES = 67
 
 _LOGGER = logging.getLogger(__name__)
 
+_LOGGER.setLevel(logging.DEBUG)
+
 Protocol = namedtuple('Protocol',
                       ['pulselength',
                        'sync_high', 'sync_low',
