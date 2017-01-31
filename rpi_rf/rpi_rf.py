@@ -131,10 +131,12 @@ class RFDevice:
             _LOGGER.error("Unknown TX protocol")
             return False
         if self.tx_proto == 6:
+            _LOGGER.debug("Send 01")
             if self.tx_waveform(PROTOCOLS[self.tx_proto].zero_high,PROTOCOLS[self.tx_proto].zero_low):
                 return self.tx_waveform(PROTOCOLS[self.tx_proto].one_high,PROTOCOLS[self.tx_proto].one_low)
             else:
                 return False
+        _LOGGER.debug("Send 0")
         return self.tx_waveform(PROTOCOLS[self.tx_proto].zero_high,
                                 PROTOCOLS[self.tx_proto].zero_low)
 
@@ -144,10 +146,12 @@ class RFDevice:
             _LOGGER.error("Unknown TX protocol")
             return False
         if self.tx_proto == 6:
+            _LOGGER.debug("Send 10")
             if self.tx_waveform(PROTOCOLS[self.tx_proto].one_high,PROTOCOLS[self.tx_proto].one_low):
                 return self.tx_waveform(PROTOCOLS[self.tx_proto].zero_high,PROTOCOLS[self.tx_proto].zero_low)
             else:
                 return False
+        _LOGGER.debug("Send 1")
         return self.tx_waveform(PROTOCOLS[self.tx_proto].one_high,
                                 PROTOCOLS[self.tx_proto].one_low)
 
