@@ -109,9 +109,9 @@ class RFDevice:
         if self.tx_proto == 6:
             nexacode = ""
             for b in rawcode:
-                if b == 0:
+                if b == '0':
                     nexacode = nexacode + "01"
-                if b == 1:
+                if b == '1':
                     nexacode = nexacode + "10"
             rawcode = nexacode
         _LOGGER.debug("TX code: " + str(code))
