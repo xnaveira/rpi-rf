@@ -33,7 +33,7 @@ class RFDevice:
 
     # pylint: disable=too-many-instance-attributes,too-many-arguments
     def __init__(self, gpio,
-                 tx_proto=1, tx_pulselength=None, tx_repeat=10, tx_length=24, rx_tolerance=80):
+                 tx_proto=1, tx_pulselength=None, tx_repeat=2, tx_length=24, rx_tolerance=80):
         """Initialize the RF device."""
         self.gpio = gpio
         self.tx_enabled = False
