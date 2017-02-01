@@ -105,9 +105,9 @@ class RFDevice:
             self.tx_pulselength = tx_pulselength
         else:
             self.tx_pulselength = PROTOCOLS[self.tx_proto].pulselength
-        rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
         if self.tx_proto == 6:
             self.tx_length=64
+            rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
             nexacode = ""
             for b in rawcode:
                 if b == '0':
@@ -115,6 +115,8 @@ class RFDevice:
                 if b == '1':
                     nexacode = nexacode + "10"
             rawcode = nexacode
+        else:
+            rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
         _LOGGER.debug("TX code: " + str(code))
         _LOGGER.debug("rawcode: " + str(rawcode))
         return self.tx_bin(rawcode)
