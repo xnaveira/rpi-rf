@@ -204,8 +204,10 @@ class RFDevice:
         """RX callback for GPIO event detection. Handle basic signal detection."""
         timestamp = int(time.perf_counter() * 1000000)
         duration = timestamp - self._rx_last_timestamp
+        _LOGGER.debug("Entering rx_callback\ntimestamp: {}\nduration: {}".format(timestamp,duration))
 
         if duration > 5000:
+            _LOGGER.debug("Duration > 5000 and rx_timings is: {}".format(self._rx_timings))
             if duration - self._rx_timings[0] < 150:
                 self._rx_repeat_count += 1
                 self._rx_change_count -= 1
@@ -228,8 +230,6 @@ class RFDevice:
         """Detect waveform and format code."""
         code = 0
         delay = int(self._rx_timings[0] / PROTOCOLS[pnum].sync_low)
-        #Testing stuff
-        self.rx_tolerance = 100
         delay_tolerance = delay * self.rx_tolerance / 100
 
         for i in range(1, change_count, 2):
