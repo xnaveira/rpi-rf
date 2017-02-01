@@ -127,10 +127,10 @@ class RFDevice:
     def tx_bin(self, rawcode):
         """Send a binary code."""
         _LOGGER.debug("TX bin: " + str(rawcode))
-        if self.tx_proto == 6:
-            if not self.tx_sync():
-                return False
         for _ in range(0, self.tx_repeat):
+            if self.tx_proto == 6:
+                if not self.tx_sync():
+                    return False
             for byte in range(0, self.tx_length):
                 if rawcode[byte] == '0':
                     if not self.tx_l0():
@@ -228,6 +228,8 @@ class RFDevice:
         """Detect waveform and format code."""
         code = 0
         delay = int(self._rx_timings[0] / PROTOCOLS[pnum].sync_low)
+        #Testing stuff
+        self.rx_tolerance = 100
         delay_tolerance = delay * self.rx_tolerance / 100
 
         for i in range(1, change_count, 2):
