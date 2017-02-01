@@ -33,7 +33,7 @@ class RFDevice:
 
     # pylint: disable=too-many-instance-attributes,too-many-arguments
     def __init__(self, gpio,
-                 tx_proto=1, tx_pulselength=None, tx_repeat=2, tx_length=24, rx_tolerance=80):
+                 tx_proto=1, tx_pulselength=None, tx_repeat=10, tx_length=24, rx_tolerance=80):
         """Initialize the RF device."""
         self.gpio = gpio
         self.tx_enabled = False
@@ -116,7 +116,7 @@ class RFDevice:
                 if b == '1':
                     nexacode = nexacode + "10"
             rawcode = nexacode
-            #And now adjust for the new code again
+            #And now adjust for the new code length again
             self.tx_length = 64
         else:
             rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
@@ -127,6 +127,9 @@ class RFDevice:
     def tx_bin(self, rawcode):
         """Send a binary code."""
         _LOGGER.debug("TX bin: " + str(rawcode))
+        if self.tx_proto == 6:
+            if not self.tx_sync():
+                return False
         for _ in range(0, self.tx_repeat):
             for byte in range(0, self.tx_length):
                 if rawcode[byte] == '0':
