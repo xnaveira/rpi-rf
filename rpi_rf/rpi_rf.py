@@ -11,6 +11,7 @@ from RPi import GPIO
 MAX_CHANGES = 67
 
 _LOGGER = logging.getLogger(__name__)
+_LOGGER.setLevel(logging.DEBUG)
 
 Protocol = namedtuple('Protocol',
                       ['pulselength',
@@ -175,7 +176,7 @@ class RFDevice:
         time.sleep((lowpulses * self.tx_pulselength) / 1000000)
         return True
 
-    def enable_rx(self):
+    def enable_rx(self, nexa =False):
         """Enable RX, set up GPIO and add event detection."""
         if self.tx_enabled:
             _LOGGER.error("TX is enabled, not enabling RX")
@@ -184,7 +185,10 @@ class RFDevice:
             self.rx_enabled = True
             GPIO.setup(self.gpio, GPIO.IN)
             GPIO.add_event_detect(self.gpio, GPIO.BOTH)
-            GPIO.add_event_callback(self.gpio, self.rx_callback)
+            if nexa:
+                GPIO.add_event_callback(self.gpio, self.rx_callback_nexa)
+            else:
+                GPIO.add_event_callback(self.gpio, self.rx_callback)
             _LOGGER.debug("RX enabled")
         return True
 
@@ -220,6 +224,10 @@ class RFDevice:
         self._rx_timings[self._rx_change_count] = duration
         self._rx_change_count += 1
         self._rx_last_timestamp = timestamp
+
+    def rx_callback_nexa(self, gpio):
+        timestamp = int(time.perf_counter() * 1000000)
+        _LOGGER.debug("{}: Event received.".format(timestamp))
 
     def _rx_waveform(self, pnum, change_count, timestamp):
         """Detect waveform and format code."""
