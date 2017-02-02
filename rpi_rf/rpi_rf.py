@@ -12,8 +12,6 @@ MAX_CHANGES = 67
 
 _LOGGER = logging.getLogger(__name__)
 
-_LOGGER.setLevel(logging.DEBUG)
-
 Protocol = namedtuple('Protocol',
                       ['pulselength',
                        'sync_high', 'sync_low',
@@ -121,7 +119,6 @@ class RFDevice:
         else:
             rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
         _LOGGER.debug("TX code: " + str(code))
-        _LOGGER.debug("rawcode: " + str(rawcode))
         return self.tx_bin(rawcode)
 
     def tx_bin(self, rawcode):
@@ -204,11 +201,9 @@ class RFDevice:
         """RX callback for GPIO event detection. Handle basic signal detection."""
         timestamp = int(time.perf_counter() * 1000000)
         duration = timestamp - self._rx_last_timestamp
-        _LOGGER.debug("Entering rx_callback\ntimestamp: {}\nduration: {}".format(timestamp,duration))
 
         if duration > 5000:
-            _LOGGER.debug("Duration > 5000 and rx_timings is: {}".format(self._rx_timings))
-            if duration - self._rx_timings[0] < 150:
+            if duration - self._rx_timings[0] < 200:
                 self._rx_repeat_count += 1
                 self._rx_change_count -= 1
                 if self._rx_repeat_count == 2:
