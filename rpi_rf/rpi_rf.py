@@ -227,7 +227,7 @@ class RFDevice:
 
     def rx_callback_nexa(self, gpio):
         timestamp = int(time.perf_counter() * 1000000)
-        _LOGGER.debug("{}: Event received.".format(timestamp))
+        _LOGGER.debug("{}: Event received {}".format(timestamp,gpio))
 
     def _rx_waveform(self, pnum, change_count, timestamp):
         """Detect waveform and format code."""
