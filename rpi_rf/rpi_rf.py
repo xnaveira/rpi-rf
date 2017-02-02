@@ -186,7 +186,8 @@ class RFDevice:
             GPIO.setup(self.gpio, GPIO.IN)
             GPIO.add_event_detect(self.gpio, GPIO.BOTH)
             if nexa:
-                GPIO.add_event_callback(self.gpio, self.rx_callback_nexa)
+                GPIO.add_event_callback(self.gpio, GPIO.RISING, self.rx_callback_nexa_up)
+                GPIO.add_event_callback(self.gpio, GPIO.FALLING, self.rx_callback_nexa_down)
             else:
                 GPIO.add_event_callback(self.gpio, self.rx_callback)
             _LOGGER.debug("RX enabled")
@@ -225,9 +226,13 @@ class RFDevice:
         self._rx_change_count += 1
         self._rx_last_timestamp = timestamp
 
-    def rx_callback_nexa(self, gpio):
+    def rx_callback_nexa_up(self, gpio):
         timestamp = int(time.perf_counter() * 1000000)
-        _LOGGER.debug("{}: Event received {}".format(timestamp,gpio))
+        _LOGGER.debug("{}: UP Event received {}".format(timestamp,gpio))
+
+    def rx_callback_nexa_down(self, gpio):
+        timestamp = int(time.perf_counter() * 1000000)
+        _LOGGER.debug("{}: DOWN Event received {}".format(timestamp,gpio))
 
     def _rx_waveform(self, pnum, change_count, timestamp):
         """Detect waveform and format code."""
