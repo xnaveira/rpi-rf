@@ -21,7 +21,7 @@ logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S',
 parser = argparse.ArgumentParser(description='Receives a decimal code via a 433/315MHz GPIO device')
 parser.add_argument('-g', dest='gpio', type=int, default=27,
                     help="GPIO pin (Default: 27)")
-parser.add_argument('-n', dest='nexa', type=bool, default=false,
+parser.add_argument('-n', dest='nexa', type=bool, default=False,
                     help="NEXA proto (Default: false)")
 args = parser.parse_args()
 
