@@ -184,11 +184,11 @@ class RFDevice:
         if not self.rx_enabled:
             self.rx_enabled = True
             GPIO.setup(self.gpio, GPIO.IN)
-            GPIO.add_event_detect(self.gpio, GPIO.BOTH)
             if nexa:
-                GPIO.add_event_callback(self.gpio, GPIO.RISING, self.rx_callback_nexa_up)
-                GPIO.add_event_callback(self.gpio, GPIO.FALLING, self.rx_callback_nexa_down)
+                GPIO.add_event_detect(self.gpio, GPIO.RISING, callback=self.rx_callback_nexa_up)
+                GPIO.add_event_detect(self.gpio, GPIO.FALLING, callback=self.rx_callback_nexa_down)
             else:
+                GPIO.add_event_detect(self.gpio, GPIO.BOTH)
                 GPIO.add_event_callback(self.gpio, self.rx_callback)
             _LOGGER.debug("RX enabled")
         return True
